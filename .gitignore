@@ -1,0 +1,7 @@
+**/data
+**/out
+**/log
+**/sql
+**/.idea
+*.iml
+**/cache

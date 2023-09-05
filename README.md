@@ -1,1 +1,1 @@
-# aion_emu_new_geo
+# aion-emu-gs-with-new-geo

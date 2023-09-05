@@ -1,0 +1,84 @@
+/**
+ * This file is part of aion-lightning <aion-lightning.org>.
+ *
+ * aion-lightning is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * aion-lightning is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * aion-lightning. If not, see <http://www.gnu.org/licenses/>.
+ */
+package com.aionemu.gameserver.taskmanager.fromdb;
+
+import com.aionemu.commons.database.dao.DAOManager;
+import com.aionemu.gameserver.configs.main.GSConfig;
+import com.aionemu.gameserver.dao.TaskFromDBDAO;
+import com.aionemu.gameserver.taskmanager.fromdb.handler.AARestartHandler;
+import com.aionemu.gameserver.taskmanager.fromdb.trigger.TaskFromDBTrigger;
+import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author nrg
+ */
+public class TaskFromDBManager {
+
+    private static final Logger log = LoggerFactory.getLogger(TaskFromDBManager.class);
+    private ArrayList<TaskFromDBTrigger> tasksList;
+
+    private TaskFromDBManager() {
+        tasksList = getDAO().getAllTasks();
+        if (tasksList.isEmpty() && GSConfig.ENABLE_ACTIVE_ANTICHEAT) {
+            tasksList = AARestartHandler.getTasks();
+        }
+        log.info("Loaded " + tasksList.size() + " task" + (tasksList.size() > 1 ? "s" : "") + " from the database or GSConfig");
+        registerTaskInstances();
+    }
+
+    /**
+     * Launching & checking task process
+     */
+    private void registerTaskInstances() {
+        // For all tasks from DB or GSConfig
+        for (TaskFromDBTrigger trigger : tasksList) {
+            if (trigger.isValid()) {
+                trigger.initTrigger();
+            } else {
+                log.error("Invalid task from db with ID: " + trigger.getTaskId());
+            }
+        }
+    }
+
+    /**
+     * Retuns {@link com.aionemu.gameserver.dao.TaskFromDBDAO} , just a shortcut
+     *
+     * @return {@link com.aionemu.gameserver.dao.TaskFromDBDAO}
+     */
+    private static TaskFromDBDAO getDAO() {
+        return DAOManager.getDAO(TaskFromDBDAO.class);
+    }
+
+    /**
+     * Get the instance
+     *
+     * @return
+     */
+    public static TaskFromDBManager getInstance() {
+        return TaskFromDBManager.SingletonHolder.instance;
+    }
+
+    /**
+     * SingletonHolder
+     */
+    private static class SingletonHolder {
+
+        protected static final TaskFromDBManager instance = new TaskFromDBManager();
+    }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<in_game_shop xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="in_game_shop.xsd">
+    <!-- can be more category -->
+    <category id="0" name="Бездна(GP)">
+		<sub_category id="3" name="Оружие"/>
+        <sub_category id="4" name="Бижутерия"/>
+		<sub_category id="5" name="Ткань"/>
+		<sub_category id="6" name="Кожа"/>
+		<sub_category id="7" name="Кольчуга"/>
+		<sub_category id="8" name="Латы"/>
+		<sub_category id="9" name="Фиол"/>
+		<sub_category id="10" name="Свитки"/>
+		<sub_category id="11" name="Медали и знаки"/>
+    </category>
+	<category id="1" name="Расходники(Кинары)">
+        <sub_category id="3" name="Ресурсы"/>
+    </category>
+	<category id="2" name="За ап">
+        <sub_category id="3" name="ыв"/>
+    </category>
+	<category id="3" name="VIP" vip="true">
+        <sub_category id="3" name="VIP"/>
+    </category>
+</in_game_shop>

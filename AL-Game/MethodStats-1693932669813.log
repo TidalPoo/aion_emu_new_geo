@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<entries>
+	<!-- This XML contains statistics about execution times. -->
+	<!-- Submitted results will help the developers to optimize the server. -->
+	<entry average="7,434,112,950" count=     "4" total="29,736,451,800" class="GameServer$2"                                               method="run()"               min="4,644,205,300" max="9,658,708,800" />
+	<entry average="7,218,485,250" count=     "2" total="14,436,970,500" class="utils.chathandlers.ChatProcessor$1"                         method="run()"               min="6,416,211,100" max="8,020,759,400" />
+	<entry average=  "695,238,200" count=     "1" total=   "695,238,200" class="network.aion.clientpackets.CM_CHARACTER_LIST"               method="run()"               min=  "695,238,200" max=  "695,238,200" />
+	<entry average=  "673,807,900" count=     "1" total=   "673,807,900" class="network.aion.serverpackets.SM_CHARACTER_LIST"               method="runImpl()"           min=  "673,807,900" max=  "673,807,900" />
+	<entry average=  "181,021,500" count=     "1" total=   "181,021,500" class="network.loginserver.clientpackets.CM_ACOUNT_AUTH_RESPONSE"  method="run()"               min=  "181,021,500" max=  "181,021,500" />
+	<entry average=   "51,910,700" count=     "1" total=    "51,910,700" class="network.aion.serverpackets.SM_KEY"                          method="runImpl()"           min=   "51,910,700" max=   "51,910,700" />
+	<entry average=   "27,590,400" count=     "1" total=    "27,590,400" class="network.aion.clientpackets.CM_VERSION_CHECK"                method="run()"               min=   "27,590,400" max=   "27,590,400" />
+	<entry average=   "24,901,200" count=     "1" total=    "24,901,200" class="network.aion.serverpackets.SM_VERSION_CHECK"                method="runImpl()"           min=   "24,901,200" max=   "24,901,200" />
+	<entry average=   "24,570,266" count=     "6" total=   "147,421,600" class="skillengine.model.Skill$2"                                  method="run()"               min=   "21,492,700" max=   "33,077,600" />
+	<entry average=   "20,854,333" count=    "27" total=   "563,067,000" class="services.base.Base$2"                                       method="run()"               min=          "600" max=  "275,961,900" />
+	<entry average=   "11,709,000" count=     "1" total=    "11,709,000" class="network.aion.clientpackets.CM_TIME_CHECK"                   method="run()"               min=   "11,709,000" max=   "11,709,000" />
+	<entry average=    "6,295,800" count=     "1" total=     "6,295,800" class="network.loginserver.clientpackets.CM_GS_CHARACTER_RESPONSE" method="run()"               min=    "6,295,800" max=    "6,295,800" />
+	<entry average=    "5,798,650" count=     "2" total=    "11,597,300" class="services.GameTimeService$1"                                 method="run()"               min=    "5,654,800" max=    "5,942,500" />
+	<entry average=    "4,540,700" count=     "1" total=     "4,540,700" class="network.aion.clientpackets.CM_MAC_ADDRESS"                  method="run()"               min=    "4,540,700" max=    "4,540,700" />
+	<entry average=    "3,615,100" count=     "1" total=     "3,615,100" class="spawnengine.InstanceRiftSpawnManager$1"                     method="run()"               min=    "3,615,100" max=    "3,615,100" />
+	<entry average=    "3,497,428" count=     "7" total=    "24,482,000" class="services.event.EventService$2"                              method="run()"               min=    "1,806,800" max=    "8,438,800" />
+	<entry average=      "980,757" count=    "14" total=    "13,730,600" class="java.lang.Thread"                                           method="run()"               min=      "760,200" max=    "1,706,200" />
+	<entry average=      "980,300" count=     "1" total=       "980,300" class="network.aion.clientpackets.CM_PING"                         method="run()"               min=      "980,300" max=      "980,300" />
+	<entry average=      "891,100" count=     "1" total=       "891,100" class="network.loginserver.clientpackets.CM_GS_AUTH_RESPONSE"      method="run()"               min=      "891,100" max=      "891,100" />
+	<entry average=      "718,900" count=     "1" total=       "718,900" class="services.PeriodicSaveService$LegionWhUpdateTask"            method="run()"               min=      "718,900" max=      "718,900" />
+	<entry average=      "610,505" count=    "17" total=    "10,378,600" class="skillengine.effect.HideEffect$1"                            method="run()"               min=        "1,300" max=    "1,048,100" />
+	<entry average=      "603,500" count=     "1" total=       "603,500" class="services.WeatherService$1"                                  method="run()"               min=      "603,500" max=      "603,500" />
+	<entry average=      "542,300" count=     "2" total=     "1,084,600" class="model.gameobjects.player.Player"                            method="packetBroadcast()"   min=      "479,000" max=      "605,600" />
+	<entry average=      "521,430" count=    "36" total=    "18,771,500" class="services.base.Base$1"                                       method="run()"               min=        "1,600" max=    "2,381,900" />
+	<entry average=      "488,000" count=     "1" total=       "488,000" class="services.DebugService$1"                                    method="run()"               min=      "488,000" max=      "488,000" />
+	<entry average=      "306,500" count=     "1" total=       "306,500" class="network.aion.clientpackets.CM_L2AUTH_LOGIN_CHECK"           method="run()"               min=      "306,500" max=      "306,500" />
+	<entry average=       "95,500" count=     "1" total=        "95,500" class="services.LifeStatsRestoreService$HpMpRestoreTask"           method="run()"               min=       "95,500" max=       "95,500" />
+	<entry average=       "91,700" count=     "1" total=        "91,700" class="network.aion.serverpackets.SM_L2AUTH_LOGIN_CHECK"           method="runImpl()"           min=       "91,700" max=       "91,700" />
+	<entry average=       "83,814" count=    "34" total=     "2,849,700" class="services.BrokerService$1"                                   method="run()"               min=       "27,400" max=    "1,151,000" />
+	<entry average=       "76,242" count="20,795" total= "1,585,459,100" class="taskmanager.tasks.MoveTaskManager"                          method="run()"               min=          "800" max=  "110,494,900" />
+	<entry average=       "65,366" count=     "9" total=       "588,300" class="services.NpcShoutsService$2"                                method="run()"               min=          "300" max=      "580,300" />
+	<entry average=       "63,527" count=    "37" total=     "2,350,500" class="services.DanceService$1$1"                                  method="run()"               min=       "33,400" max=      "176,000" />
+	<entry average=       "61,945" count=    "37" total=     "2,292,000" class="services.DanceService$1"                                    method="run()"               min=       "30,100" max=      "618,200" />
+	<entry average=       "51,457" count=   "413" total=    "21,252,100" class="utils.gametime.GameTimeUpdater"                             method="run()"               min=          "700" max=    "8,800,300" />
+	<entry average=       "41,800" count=     "1" total=        "41,800" class="network.aion.serverpackets.SM_PONG"                         method="runImpl()"           min=       "41,800" max=       "41,800" />
+	<entry average=       "31,300" count=     "1" total=        "31,300" class="network.aion.serverpackets.SM_ACCOUNT_PROPERTIES"           method="runImpl()"           min=       "31,300" max=       "31,300" />
+	<entry average=       "30,572" count= "4,099" total=   "125,315,600" class="world.zone.ZoneUpdateService"                               method="run()"               min=          "700" max=    "5,035,600" />
+	<entry average=       "24,900" count=     "1" total=        "24,900" class="network.aion.serverpackets.SM_TIME_CHECK"                   method="runImpl()"           min=       "24,900" max=       "24,900" />
+	<entry average=       "19,779" count=    "91" total=     "1,799,900" class="ai2.manager.WalkManager$1"                                  method="run()"               min=        "5,800" max=      "169,900" />
+	<entry average=       "18,513" count= "4,082" total=    "75,572,600" class="taskmanager.tasks.MovementNotifyTask"                       method="run()"               min=          "500" max=    "1,751,600" />
+	<entry average=       "17,575" count=   "826" total=    "14,517,000" class="ai.siege.SpringAI2$1"                                       method="run()"               min=          "500" max=      "308,400" />
+	<entry average=       "17,380" count= "3,815" total=    "66,306,500" class="model.gameobjects.Npc"                                      method="ZoneUpdateService()" min=        "6,900" max=    "1,058,100" />
+	<entry average=       "12,064" count=    "34" total=       "410,200" class="services.SerialKillerService$1"                             method="run()"               min=        "3,700" max=      "137,500" />
+	<entry average=        "8,012" count="10,504" total=    "84,164,100" class="taskmanager.tasks.PacketBroadcaster"                        method="run()"               min=        "1,100" max=    "8,696,500" />
+	<entry average=        "6,318" count="25,782" total=   "162,900,100" class="services.NpcShoutsService$1"                                method="run()"               min=          "300" max=    "1,041,000" />
+	<entry average=        "6,307" count= "3,797" total=    "23,950,000" class="model.gameobjects.Npc"                                      method="notifyOnMove()"      min=        "2,200" max=    "1,743,100" />
+	<entry average=        "6,283" count= "1,043" total=     "6,553,600" class="model.gameobjects.Npc"                                      method="packetBroadcast()"   min=          "900" max=    "1,220,500" />
+	<entry average=        "5,986" count=   "343" total=     "2,053,500" class="services.BrokerService$BrokerPeriodicTaskManager"           method="run()"               min=          "500" max=      "109,600" />
+	<entry average=        "5,804" count=   "412" total=     "2,391,400" class="services.ExchangeService$ExchangePeriodicTaskManager"       method="run()"               min=          "600" max=      "233,900" />
+	<entry average=        "1,600" count=     "1" total=         "1,600" class="network.loginserver.clientpackets.CM_MACBAN_LIST"           method="run()"               min=        "1,600" max=        "1,600" />
+</entries>
