@@ -41,7 +41,7 @@ public class Version {
     }
 
     public Version(Class<?> c) {
-        loadInformation(c);
+        //loadInformation(c);
     }
 
     public void loadInformation(Class<?> c) {

@@ -17,10 +17,10 @@
 package com.aionemu.gameserver.world.geo;
 
 import com.aionemu.gameserver.configs.main.GeoDataConfig;
-import com.aionemu.gameserver.geoEngine.collision.CollisionResults;
 import com.aionemu.gameserver.geoEngine.math.Vector3f;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
+import com.aionemu.gameserver.network.rest.GeoHttp;
 import com.aionemu.gameserver.utils.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,10 +64,11 @@ public class GeoService {
      * @return
      */
     public float getZAfterMoveBehind(int worldId, float x, float y, float z, int instanceId) {
-        if (GeoDataConfig.GEO_ENABLE) {
-            return getZ(worldId, x, y, z, 0, instanceId);
-        }
-        return getZ(worldId, x, y, z, 0.5f, instanceId);
+//        if (GeoDataConfig.GEO_ENABLE) {
+//            return getZ(worldId, x, y, z, 0, instanceId);
+//        }
+//        return getZ(worldId, x, y, z, 0.5f, instanceId);
+        return getZ(worldId, x, y, z, 0, instanceId);
     }
 
     /**
@@ -75,7 +76,8 @@ public class GeoService {
      * @return
      */
     public float getZ(VisibleObject object) {
-        return geoData.getMap(object.getWorldId()).getZ(object.getX(), object.getY(), object.getZ(), object.getInstanceId());
+        //return geoData.getMap(object.getWorldId()).getZ(object.getX(), object.getY(), object.getZ(), object.getInstanceId());
+        return GeoHttp.getFirstCollision(object.getWorldId(), object.getX(),  object.getY(), object.getZ());
     }
 
     /**
@@ -88,15 +90,15 @@ public class GeoService {
      * @return
      */
     public float getZ(int worldId, float x, float y, float z, float defaultUp, int instanceId) {
-        float newZ = geoData.getMap(worldId).getZ(x, y, z, instanceId);
-        if (!GeoDataConfig.GEO_ENABLE) {
-            newZ += defaultUp;
-        }/*
-         else {
-         newZ += 0.5f;			
-         }*/
-
-        return newZ;
+//        float newZ = geoData.getMap(worldId).getZ(x, y, z, instanceId);
+//        if (!GeoDataConfig.GEO_ENABLE) {
+//            newZ += defaultUp;
+//        }/*
+//         else {
+//         newZ += 0.5f;
+//         }*/
+//        return newZ;
+        return GeoHttp.getFirstCollision(worldId, x, y, z);
     }
 
     /**
@@ -106,15 +108,11 @@ public class GeoService {
      * @return
      */
     public float getZ(int worldId, float x, float y) {
-        return geoData.getMap(worldId).getZ(x, y);
+        return GeoHttp.getFirstZ(worldId, x, y);
     }
 
     public String getDoorName(int worldId, String meshFile, float x, float y, float z) {
         return geoData.getMap(worldId).getDoorName(worldId, meshFile, x, y, z);
-    }
-
-    public CollisionResults getCollisions(VisibleObject object, float x, float y, float z, boolean changeDirection, byte intentions) {
-        return geoData.getMap(object.getWorldId()).getCollisions(object.getX(), object.getY(), object.getZ(), x, y, z, changeDirection, false, object.getInstanceId(), intentions);
     }
 
     /**
@@ -123,20 +121,12 @@ public class GeoService {
      * @return
      */
     public boolean canSee(VisibleObject object, VisibleObject target) {
-        if (!GeoDataConfig.CANSEE_ENABLE) {
-            return true;
-        }
         float limit = (float) (MathUtil.getDistance(object, target) - target.getObjectTemplate().getBoundRadius().getCollision());
         if (limit <= 0) {
             return true;
         }
-        return geoData.getMap(object.getWorldId()).canSee(object.getX(), object.getY(),
-                object.getZ() + object.getObjectTemplate().getBoundRadius().getUpper() / 2, target.getX(), target.getY(),
-                target.getZ() + target.getObjectTemplate().getBoundRadius().getUpper() / 2, limit, object.getInstanceId());
-    }
-
-    public boolean canSee(int worldId, float x, float y, float z, float x1, float y1, float z1, float limit, int instanceId) {
-        return geoData.getMap(worldId).canSee(x, y, z, x1, y1, z1, limit, instanceId);
+        return GeoHttp.canSee(object.getWorldId(), object.getX(), object.getY(),object.getZ() + object.getObjectTemplate().getBoundRadius().getUpper() / 2,
+                target.getX(), target.getY(),target.getZ() + target.getObjectTemplate().getBoundRadius().getUpper() / 2, limit);
     }
 
     public boolean isGeoOn() {

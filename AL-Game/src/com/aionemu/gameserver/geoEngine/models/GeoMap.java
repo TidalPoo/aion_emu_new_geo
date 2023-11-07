@@ -29,14 +29,15 @@ import com.aionemu.gameserver.geoEngine.math.Vector3f;
 import com.aionemu.gameserver.geoEngine.scene.Node;
 import com.aionemu.gameserver.geoEngine.scene.Spatial;
 import com.aionemu.gameserver.geoEngine.scene.mesh.DoorGeometry;
+import javolution.util.FastMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import javolution.util.FastMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Mr. Poke
@@ -132,31 +133,6 @@ public class GeoMap extends Node {
         this.terrainData = terrainData;
     }
 
-    public float getZ(float x, float y) {
-        CollisionResults results = new CollisionResults(CollisionIntention.PHYSICAL.getId(), false, 1);
-        Vector3f pos = new Vector3f(x, y, 4000);
-        Vector3f dir = new Vector3f(x, y, 0);
-        Float limit = pos.distance(dir);
-        dir.subtractLocal(pos).normalizeLocal();
-        Ray r = new Ray(pos, dir);
-        r.setLimit(limit);
-        collideWith(r, results);
-        Vector3f terrain = null;
-        if (terrainData.length == 1) {
-            terrain = new Vector3f(x, y, terrainData[0] / 32f);
-        } else {
-            terrain = terraionCollision(x, y, r);
-        }
-        if (terrain != null) {
-            CollisionResult result = new CollisionResult(terrain, Math.max(0, Math.max(4000 - terrain.z, terrain.z)));
-            results.addCollision(result);
-        }
-        if (results.size() == 0) {
-            return 0;
-        }
-        return results.getClosestCollision().getContactPoint().z;
-    }
-
     public float getZ(float x, float y, float z, int instanceId) {
         CollisionResults results = new CollisionResults(CollisionIntention.PHYSICAL.getId(), false, instanceId);
         Vector3f pos = new Vector3f(x, y, z + 2);
@@ -187,7 +163,6 @@ public class GeoMap extends Node {
     public Vector3f getClosestCollision(float x, float y, float z, float targetX, float targetY, float targetZ, boolean changeDirection,
             boolean fly, int instanceId, byte intentions) {
         float zChecked1 = 0;
-        float zChecked2 = 0;
         if (!fly && changeDirection) {
             zChecked1 = z;
             z = getZ(x, y, z + 2, instanceId);
@@ -213,7 +188,7 @@ public class GeoMap extends Node {
 
         collideWith(r, results);
 
-        float geoZ = 0;
+        float geoZ;
         if (results.size() == 0) {
             if (fly) {
                 return end;
@@ -221,7 +196,6 @@ public class GeoMap extends Node {
             if (zChecked1 > 0 && targetX == x && targetY == y && targetZ - 1f == zChecked1) {
                 geoZ = z - 1f;
             } else {
-                zChecked2 = targetZ;
                 geoZ = getZ(targetX, targetY, targetZ + 2, instanceId);
             }
             if (Math.abs(geoZ - targetZ) < start.distance(end)) {
@@ -239,8 +213,6 @@ public class GeoMap extends Node {
         if (!fly && changeDirection) {
             if (zChecked1 > 0 && contactPoint.x == x && contactPoint.y == y && contactPoint.z == zChecked1) {
                 contactPoint.z = z - 1f;
-            } else if (zChecked2 > 0 && contactPoint.x == targetX && contactPoint.y == targetY && contactPoint.z == zChecked2) {
-                contactPoint.z = geoZ;
             } else {
                 contactPoint.z = getZ(contactPoint.x, contactPoint.y, contactPoint.z + 2, instanceId);
             }
@@ -250,102 +222,6 @@ public class GeoMap extends Node {
         }
 
         return contactPoint;
-    }
-
-    public Vector3f getClosestCollisionRandoMoveLoc(float x, float y, float z, float targetX, float targetY, float targetZ, boolean changeDirection,
-            boolean fly, int instanceId, byte intentions) {
-        float zChecked1 = 0;
-        float zChecked2 = 0;
-        if (!fly && changeDirection) {
-            zChecked1 = z;
-            z = getZ(x, y, z + 2, instanceId);
-        }
-        z += 1f;
-        targetZ += 1f;
-        Vector3f start = new Vector3f(x, y, z);
-        Vector3f end = new Vector3f(targetX, targetY, targetZ);
-        Vector3f pos = new Vector3f(x, y, z);
-        Vector3f dir = new Vector3f(targetX, targetY, targetZ);
-
-        CollisionResults results = new CollisionResults(intentions, false, instanceId);
-
-        Float limit = pos.distance(dir);
-        dir.subtractLocal(pos).normalizeLocal();
-        Ray r = new Ray(pos, dir);
-        r.setLimit(limit);
-        Vector3f terrain = calculateTerrainCollision(start.x, start.y, start.z, end.x, end.y, end.z, r);
-        if (terrain != null) {
-            CollisionResult result = new CollisionResult(terrain, terrain.distance(pos));
-            results.addCollision(result);
-        }
-
-        collideWith(r, results);
-
-        float geoZ = 0;
-        if (results.size() == 0) {
-            if (fly) {
-                return end;
-            }
-            if (zChecked1 > 0 && targetX == x && targetY == y && targetZ - 1f == zChecked1) {
-                geoZ = z - 1f;
-            } else {
-                zChecked2 = targetZ;
-                geoZ = getZ(targetX, targetY, targetZ + 2, instanceId);
-            }
-            if (Math.abs(geoZ - targetZ) < start.distance(end)) {
-                return end.setZ(geoZ);
-            }
-            return start;
-        }
-        Vector3f contactPoint = results.getClosestCollision().getContactPoint();
-        float distance = results.getClosestCollision().getDistance();
-        if (distance < 1) {
-            return start;
-        }
-        // -1m
-        contactPoint = contactPoint.subtract(dir);
-        if (!fly && changeDirection) {
-            if (zChecked1 > 0 && contactPoint.x == x && contactPoint.y == y && contactPoint.z == zChecked1) {
-                contactPoint.z = z - 1f;
-            } else if (zChecked2 > 0 && contactPoint.x == targetX && contactPoint.y == targetY && contactPoint.z == zChecked2) {
-                contactPoint.z = geoZ;
-            } else {
-                contactPoint.z = getZ(contactPoint.x, contactPoint.y, contactPoint.z + 2, instanceId);
-            }
-        }
-        if (!fly && Math.abs(start.z - contactPoint.z) > distance) {
-            return start;
-        }
-
-        return contactPoint;
-    }
-
-    public CollisionResults getCollisions(float x, float y, float z, float targetX, float targetY, float targetZ, boolean changeDirection,
-            boolean fly, int instanceId, byte intentions) {
-        if (!fly && changeDirection) {
-            z = getZ(x, y, z + 2, instanceId);
-        }
-        z += 1f;
-        targetZ += 1f;
-        Vector3f start = new Vector3f(x, y, z);
-        Vector3f end = new Vector3f(targetX, targetY, targetZ);
-        Vector3f pos = new Vector3f(x, y, z);
-        Vector3f dir = new Vector3f(targetX, targetY, targetZ);
-
-        CollisionResults results = new CollisionResults(intentions, false, instanceId);
-
-        Float limit = pos.distance(dir);
-        dir.subtractLocal(pos).normalizeLocal();
-        Ray r = new Ray(pos, dir);
-        r.setLimit(limit);
-        Vector3f terrain = calculateTerrainCollision(start.x, start.y, start.z, end.x, end.y, end.z, r);
-        if (terrain != null) {
-            CollisionResult result = new CollisionResult(terrain, terrain.distance(pos));
-            results.addCollision(result);
-        }
-
-        collideWith(r, results);
-        return results;
     }
 
     private Vector3f calculateTerrainCollision(float x, float y, float z, float targetX, float targetY, float targetZ, Ray ray) {
@@ -404,40 +280,6 @@ public class GeoMap extends Node {
             }
         }
         return null;
-    }
-
-    public boolean canSee(float x, float y, float z, float targetX, float targetY, float targetZ, float limit, int instanceId) {
-        targetZ += 1;
-        z += 1;
-        // Another fix can see in instances
-        // if (getZ(targetX, targetY) > targetZ)
-        // return false;
-
-        float x2 = x - targetX;
-        float y2 = y - targetY;
-        float distance = (float) Math.sqrt(x2 * x2 + y2 * y2);
-        if (distance > 80f) {
-            return false;
-        }
-        int intD = (int) Math.abs(distance);
-
-        Vector3f pos = new Vector3f(x, y, z);
-        Vector3f dir = new Vector3f(targetX, targetY, targetZ);
-        dir.subtractLocal(pos).normalizeLocal();
-        Ray r = new Ray(pos, dir);
-        r.setLimit(limit);
-        for (float s = 2; s < intD; s += 2) {
-            float tempX = targetX + (x2 * s / distance);
-            float tempY = targetY + (y2 * s / distance);
-            Vector3f result = terraionCollision(tempX, tempY, r);
-            if (result != null) {
-                return false;
-            }
-        }
-        CollisionResults results = new CollisionResults((byte) (CollisionIntention.PHYSICAL.getId() | CollisionIntention.DOOR.getId()), false,
-                instanceId);
-        int collisions = this.collideWith(r, results);
-        return (results.size() == 0 && collisions == 0);
     }
 
     /*
